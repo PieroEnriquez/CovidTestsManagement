@@ -14,5 +14,11 @@ contract WHO_contract{
     //Mapping to relate the clinics with the validation given by the WHO
     mapping(address => bool) validClincs;
 
+    //Mapping to relate a clinic to its contract
+    mapping(address => address) clinicContract;
+
+    //Addresses array for the contracts of validated clinics
+    address[] public contractsValidatedClinics;
+
 }
 
