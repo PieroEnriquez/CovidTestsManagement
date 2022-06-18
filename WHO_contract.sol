@@ -64,12 +64,29 @@ contract WHO_contract{
 
 }
 
+//Clinics' contract for management
 contract Clinic{
 
     address public clinicContract;
+    address public thisContract;
 
     constructor(address _address){
         clinicContract = _address;
+        thisContract = address(this);
     }
+
+    //Mapping to relate someone's hash with their results: diagnosis and IPFS code
+    mapping(bytes32 => Results) covidResults;
+
+    //Struct for the results
+    struct Results{
+        bool diagnosis;
+        string IPFScode;
+    }
+
+    //Events
+    event newResult(string, bool);
+
+
 }
 
