@@ -87,6 +87,34 @@ contract Clinic{
     //Events
     event newResult(string, bool);
 
+    //Modifier for only the clinic to run a function
+    modifier onlyClinic(address _clinic){
+        require(_clinic == clinicContract, "You are not allowed to run this function");
+        _;
+    }
+
+    //Function to publish a covid test result by relating the struct Result with the client id
+    function resultCovidTest(string memory _id, bool _result, string memory _IPFScode) public onlyClinic(msg.sender){
+        //Frist we get the hash of client's id
+        bytes32 hashID = keccak256(abi.encodePacked(_id));
+        covidResults[hashID] = Results(_result, _IPFScode);
+        emit newResult(_IPFScode, _result);
+    }
+
+    //Function to visualize your results from your id
+    function myResults(string memory _id) public view returns(string memory, string memory){
+        //Getting the client's id's hash
+        bytes32 hashID = keccak256(abi.encodePacked(_id));
+        //Giving back a boolean as a string
+        string memory result;
+        if(covidResults[hashID].diagnosis == true){
+            result = "Positive";
+        } else {
+            result = "Negative";
+        }
+
+        return(result, covidResults[hashID].IPFScode);
+    }
 
 }
 
